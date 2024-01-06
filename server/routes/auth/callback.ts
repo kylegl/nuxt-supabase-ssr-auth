@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const code = query?.code
-  const next = query?.next as string ?? '/'
+  const next = query?.next as string | null
 
   if (!code) {
     throw createError({
@@ -15,6 +15,6 @@ export default defineEventHandler(async (event) => {
   const { error } = await supabase.auth.exchangeCodeForSession(code as string)
 
   if (!error)
-    await sendRedirect(event, next)
+    await sendRedirect(event, `/login?next=${next}`)
 
 })

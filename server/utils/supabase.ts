@@ -45,12 +45,10 @@ export async function supabaseServerUser(
 
   const supabase = await supabaseServerClient(event, { serviceRole })
 
-  const { data: { session }, error } = await supabase.auth.getSession()
+  const { data: { user }, error } = await supabase.auth.getUser()
 
   if (error)
     throw createError({ statusMessage: error?.message })
 
-  event.context._user = session?.user ?? null
-
-  return event.context._user
+  return user
 }
